@@ -1,0 +1,176 @@
+services:
+  orderer.example.com:
+    image: hyperledger/fabric-orderer:${FABRIC_VERSION}
+    container_name: ${ORDERER_NAME}
+    environment:
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=${ORDERER_PORT}
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/msp
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/genesis.block
+      - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:9446
+      - ORDERER_METRICS_PROVIDER=prometheus
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/tls/ca.crt]
+    command: orderer
+    volumes:
+      - ${ARTIFACTS_DIR}/genesis.block:/var/hyperledger/genesis.block
+      - ${CRYPTO_DIR}/ordererOrganizations/example.com/orderers/${ORDERER_NAME}/msp:/var/hyperledger/msp
+      - ${CRYPTO_DIR}/ordererOrganizations/example.com/orderers/${ORDERER_NAME}/tls:/var/hyperledger/tls
+    ports:
+      - "${ORDERER_PORT}:${ORDERER_PORT}"
+      - "9446:9446"
+    networks: [fabric]
+
+  # === ORG1 ===
+  couchdb.peer0.org1.example.com:
+    image: couchdb:3.3
+    container_name: couchdb.${ORG1_PEER0_NAME}
+    environment:
+      - COUCHDB_USER=${COUCH_USER}
+      - COUCHDB_PASSWORD=${COUCH_PASSWORD}
+      - COUCHDB_CREATE_DATABASES=true
+      - COUCHDB_SECRET=some_random_secret
+    ports:
+      - "${ORG1_COUCH_PORT}:5984"   # opcional
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://${COUCH_USER}:${COUCH_PASSWORD}@localhost:5984/"]
+      interval: 5s
+      timeout: 2s
+      retries: 30
+    networks: [fabric]
+    
+
+  peer0.org1.example.com:
+    image: hyperledger/fabric-peer:${FABRIC_VERSION}
+    container_name: ${ORG1_PEER0_NAME}
+    environment:
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_ID=${ORG1_PEER0_NAME}
+      - CORE_PEER_ADDRESS=${ORG1_PEER0_NAME}:${ORG1_PEER0_PORT}
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:${ORG1_PEER0_PORT}
+      - CORE_PEER_CHAINCODEADDRESS=${ORG1_PEER0_NAME}:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_fabric
+      - CORE_PEER_GOSSIP_BOOTSTRAP=${ORG1_PEER0_NAME}:${ORG1_PEER0_PORT}
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=${ORG1_PEER0_NAME}:${ORG1_PEER0_PORT}
+      - CORE_PEER_LOCALMSPID=${ORG1_MSP}
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
+      - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9444
+      - CORE_METRICS_PROVIDER=prometheus
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
+      # CouchDB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.${ORG1_PEER0_NAME}:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCH_USER}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCH_PASSWORD}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${CRYPTO_DIR}/peerOrganizations/${ORG1_NAME}/peers/${ORG1_PEER0_NAME}/msp:/var/hyperledger/msp
+      - ${CRYPTO_DIR}/peerOrganizations/${ORG1_NAME}/peers/${ORG1_PEER0_NAME}/tls:/var/hyperledger/tls
+      - peer0org1-data:/var/hyperledger/production
+    ports:
+      - "${ORG1_PEER0_PORT}:${ORG1_PEER0_PORT}"
+      - "9444:9444"
+    depends_on:
+      couchdb.peer0.org1.example.com:
+        condition: service_healthy
+    networks: [fabric]
+
+  # === ORG2 ===
+  couchdb.peer0.org2.example.com:
+    image: couchdb:3.3
+    container_name: couchdb.${ORG2_PEER0_NAME}
+    environment:
+      - COUCHDB_USER=${COUCH_USER}
+      - COUCHDB_PASSWORD=${COUCH_PASSWORD}
+      - COUCHDB_CREATE_DATABASES=true
+      - COUCHDB_SECRET=some_random_secret
+    ports:
+      - "${ORG2_COUCH_PORT}:5984"   # opcional
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://${COUCH_USER}:${COUCH_PASSWORD}@localhost:5984/"]
+      interval: 5s
+      timeout: 2s
+      retries: 30
+    networks: [fabric]
+
+  peer0.org2.example.com:
+    image: hyperledger/fabric-peer:${FABRIC_VERSION}
+    container_name: ${ORG2_PEER0_NAME}
+    environment:
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_ID=${ORG2_PEER0_NAME}
+      - CORE_PEER_ADDRESS=${ORG2_PEER0_NAME}:${ORG2_PEER0_PORT}
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:${ORG2_PEER0_PORT}
+      - CORE_PEER_CHAINCODEADDRESS=${ORG2_PEER0_NAME}:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_fabric
+      - CORE_PEER_GOSSIP_BOOTSTRAP=${ORG2_PEER0_NAME}:${ORG2_PEER0_PORT}
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=${ORG2_PEER0_NAME}:${ORG2_PEER0_PORT}
+      - CORE_PEER_LOCALMSPID=${ORG2_MSP}
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
+      - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9445
+      - CORE_METRICS_PROVIDER=prometheus
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
+      # CouchDB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.${ORG2_PEER0_NAME}:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCH_USER}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCH_PASSWORD}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${CRYPTO_DIR}/peerOrganizations/${ORG2_NAME}/peers/${ORG2_PEER0_NAME}/msp:/var/hyperledger/msp
+      - ${CRYPTO_DIR}/peerOrganizations/${ORG2_NAME}/peers/${ORG2_PEER0_NAME}/tls:/var/hyperledger/tls
+      - peer0org2-data:/var/hyperledger/production
+    ports:
+      - "${ORG2_PEER0_PORT}:${ORG2_PEER0_PORT}"
+      - "9445:9445"
+    depends_on:
+      couchdb.peer0.org2.example.com:
+        condition: service_healthy
+    networks: [fabric]
+
+  tools:
+    image: hyperledger/fabric-tools:${FABRIC_VERSION}
+    container_name: tools
+    environment:
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_MSPCONFIGPATH=/organizations/peerOrganizations/${ORG1_NAME}/users/Admin@${ORG1_NAME}/msp
+      - CORE_PEER_ADDRESS=${ORG1_PEER0_NAME}:${ORG1_PEER0_PORT}
+      - CORE_PEER_LOCALMSPID=${ORG1_MSP}
+      - CORE_PEER_TLS_ROOTCERT_FILE=/organizations/peerOrganizations/${ORG1_NAME}/peers/${ORG1_PEER0_NAME}/tls/ca.crt
+      - ORDERER_CA=/organizations/ordererOrganizations/example.com/orderers/${ORDERER_NAME}/msp/tlscacerts/tlsca.example.com-cert.pem
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/workspace
+      - ${CRYPTO_DIR}:/organizations
+      - ${ARTIFACTS_DIR}:/artifacts
+    depends_on:
+      - orderer.example.com
+      - peer0.org1.example.com
+      - peer0.org2.example.com
+    networks: [fabric]
+
+volumes:
+  peer0org1-data:
+  peer0org2-data:
+
+networks:
+  fabric:
+    driver: bridge

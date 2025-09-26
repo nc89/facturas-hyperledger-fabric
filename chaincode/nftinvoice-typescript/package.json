@@ -1,0 +1,20 @@
+{
+  "name": "nftinvoice-typescript",
+  "version": "1.2.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "fabric-chaincode-node start"
+  },
+  "dependencies": {
+    "fabric-contract-api": "^2.5.0",
+    "fabric-shim": "^2.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=12.13.0 || >=14.15.0 || >=16.0.0"
+  }
+}
