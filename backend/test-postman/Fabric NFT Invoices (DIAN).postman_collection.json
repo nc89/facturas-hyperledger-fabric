@@ -1,0 +1,1102 @@
+{
+	"info": {
+		"_postman_id": "0b347ccd-c46c-49a6-9318-b8a613339149",
+		"name": "Fabric NFT Invoices (DIAN)",
+		"description": "Flujo completo: emisión, aceptación, consulta, auditoría off/on-chain.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13337299"
+	},
+	"item": [
+		{
+			"name": "1. Emitir factura (MintFactura)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_emisor}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tokenId\": \"{{token_id}}\",\n  \"numero\": \"FAC-2025-0001\",\n  \"receptorId\": \"Org2MSP\",\n  \"moneda\": \"COP\",\n  \"montoTotal\": 1200000,\n  \"hashPDF\": \"sha256:abc123...\",\n  \"privateData\": {\n    \"items\": [\n      {\"descripcion\": \"Servicio consultoría\", \"cantidad\": 1, \"precioUnit\": 1200000}\n    ],\n    \"observaciones\": \"Proyecto piloto DIAN\",\n    \"metadata\": {\"radicadoDIAN\": \"1234567890\"}\n  }\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/facturas",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "1. Emitir factura (MintFactura)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_emisor}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tokenId\": \"{{token_id}}\",\n  \"numero\": \"FAC-2025-0001\",\n  \"receptorId\": \"Org2MSP\",\n  \"moneda\": \"COP\",\n  \"montoTotal\": 1200000,\n  \"hashPDF\": \"sha256:abc123...\",\n  \"privateData\": {\n    \"items\": [\n      {\"descripcion\": \"Servicio consultoría\", \"cantidad\": 1, \"precioUnit\": 1200000}\n    ],\n    \"observaciones\": \"Proyecto piloto DIAN\",\n    \"metadata\": {\"radicadoDIAN\": \"1234567890\"}\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/facturas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "210"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d2-+XGI7QuuSXGoQ7owJmZna7/H6as\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 16:33:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"No valid responses from any peers. Errors:\\n    peer=peer0.org2.example.com:9051, status=500, message=tokenId ya existe\\n    peer=peer0.org1.example.com:7051, status=500, message=tokenId ya existe\"\n}"
+				}
+			]
+		},
+		{
+			"name": "2. Aceptar factura (Org2)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_receptor}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}/aceptar",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}",
+						"aceptar"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "2. Aceptar factura (Org2)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_receptor}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}/aceptar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}",
+								"aceptar"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "42"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a-U12rJHlxACabgn71Gj+G/SCXDOo\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 09:30:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"tokenId\": \"CUFE-004\",\n    \"estado\": \"ACEPTADA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "3. Consultar factura",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_receptor}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "3. Consultar factura",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_receptor}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1980"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"7bc-X75Pd2RULEvjUq3MtN5Q493D0aY\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 16:23:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"public\": {\n        \"createdAt\": 1758965381,\n        \"createdBy\": {\n            \"idHash\": \"676e50764a83f5b0d4a445805f1bf41c74bd9fa30c92aee1ab63230c017678d6\",\n            \"mspId\": \"Org1MSP\",\n            \"subject\": \"/C=US/ST=California/L=San Francisco/OU=admin/CN=Admin@org1.example.com\"\n        },\n        \"emisorId\": \"Org1MSP\",\n        \"estado\": \"PAGADA\",\n        \"hashPDF\": \"sha256:abc123...\",\n        \"historial\": [\n            {\n                \"accion\": \"EMITIDA\",\n                \"actor\": {\n                    \"idHash\": \"676e50764a83f5b0d4a445805f1bf41c74bd9fa30c92aee1ab63230c017678d6\",\n                    \"mspId\": \"Org1MSP\",\n                    \"subject\": \"/C=US/ST=California/L=San Francisco/OU=admin/CN=Admin@org1.example.com\"\n                },\n                \"metadata\": {\n                    \"numero\": \"FAC-2025-0001\"\n                },\n                \"timestamp\": 1758965381,\n                \"txId\": \"fb28090b66310c5230bf5dcdee0d700f3f030ac34fb8f3ad6f1a7a8eecd875d5\"\n            },\n            {\n                \"accion\": \"ACEPTADA\",\n                \"actor\": {\n                    \"idHash\": \"d9c5dd04baedbecda80693c7d4c0615279890d5f5921b7293547f060bab59bcd\",\n                    \"mspId\": \"Org2MSP\",\n                    \"subject\": \"/C=US/ST=California/L=San Francisco/OU=admin/CN=Admin@org2.example.com\"\n                },\n                \"timestamp\": 1758965402,\n                \"txId\": \"7cdc3f1b9986d85ed8ed5f7b0242521fe08301b01fe70f9751969d34965c385a\"\n            },\n            {\n                \"accion\": \"PAGADA\",\n                \"actor\": {\n                    \"idHash\": \"abff1ff15f1417509288bc8c18a9250069c91b6f7512cddc2cc45b0ccc001218\",\n                    \"mspId\": \"Org1MSP\",\n                    \"subject\": \"/C=US/ST=California/L=San Francisco/O=org1.example.com/OU=client/CN=nicolas@org1.example.com\"\n                },\n                \"timestamp\": 1758965846,\n                \"txId\": \"f4c9ddef05187348e5acde777f8f2bd14e97965212a361c19a6f79c7e41d530e\",\n                \"metadata\": {\n                    \"refPago\": \"TRANS-987\"\n                }\n            }\n        ],\n        \"lastAction\": \"PAGADA\",\n        \"lastActor\": {\n            \"mspId\": \"Org1MSP\",\n            \"subject\": \"/C=US/ST=California/L=San Francisco/O=org1.example.com/OU=client/CN=nicolas@org1.example.com\",\n            \"idHash\": \"abff1ff15f1417509288bc8c18a9250069c91b6f7512cddc2cc45b0ccc001218\"\n        },\n        \"lastUpdatedBy\": \"Org1MSP\",\n        \"moneda\": \"COP\",\n        \"montoTotal\": 1200000,\n        \"numero\": \"FAC-2025-0001\",\n        \"privateDataHash\": \"c2d7482f408eee3e580517dfac0f768e221ed0e549b49554dd1d2cc3fbf05753\",\n        \"receptorId\": \"Org2MSP\",\n        \"tokenId\": \"CUFE-004\",\n        \"updatedAt\": 1758965846,\n        \"version\": 3\n    },\n    \"private\": {\n        \"items\": [\n            {\n                \"cantidad\": 1,\n                \"descripcion\": \"Servicio consultoría\",\n                \"precioUnit\": 1200000\n            }\n        ],\n        \"metadata\": {\n            \"radicadoDIAN\": \"1234567890\"\n        },\n        \"observaciones\": \"Proyecto piloto DIAN\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "4. Historial on-chain",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_emisor}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}/historial",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}",
+						"historial"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "4. Historial on-chain",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_emisor}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}/historial",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}",
+								"historial"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1011"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3f3-UQMQMKtk40BchqMtMmP0GhiDPYc\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 16:24:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"accion\": \"EMITIDA\",\n        \"actor\": {\n            \"idHash\": \"676e50764a83f5b0d4a445805f1bf41c74bd9fa30c92aee1ab63230c017678d6\",\n            \"mspId\": \"Org1MSP\",\n            \"subject\": \"/C=US/ST=California/L=San Francisco/OU=admin/CN=Admin@org1.example.com\"\n        },\n        \"metadata\": {\n            \"numero\": \"FAC-2025-0001\"\n        },\n        \"timestamp\": 1758965381,\n        \"txId\": \"fb28090b66310c5230bf5dcdee0d700f3f030ac34fb8f3ad6f1a7a8eecd875d5\"\n    },\n    {\n        \"accion\": \"ACEPTADA\",\n        \"actor\": {\n            \"idHash\": \"d9c5dd04baedbecda80693c7d4c0615279890d5f5921b7293547f060bab59bcd\",\n            \"mspId\": \"Org2MSP\",\n            \"subject\": \"/C=US/ST=California/L=San Francisco/OU=admin/CN=Admin@org2.example.com\"\n        },\n        \"timestamp\": 1758965402,\n        \"txId\": \"7cdc3f1b9986d85ed8ed5f7b0242521fe08301b01fe70f9751969d34965c385a\"\n    },\n    {\n        \"accion\": \"PAGADA\",\n        \"actor\": {\n            \"idHash\": \"abff1ff15f1417509288bc8c18a9250069c91b6f7512cddc2cc45b0ccc001218\",\n            \"mspId\": \"Org1MSP\",\n            \"subject\": \"/C=US/ST=California/L=San Francisco/O=org1.example.com/OU=client/CN=nicolas@org1.example.com\"\n        },\n        \"timestamp\": 1758965846,\n        \"txId\": \"f4c9ddef05187348e5acde777f8f2bd14e97965212a361c19a6f79c7e41d530e\",\n        \"metadata\": {\n            \"refPago\": \"TRANS-987\"\n        }\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "5. Auditoría on-chain (colección privada)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_emisor}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}/consultas",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}",
+						"consultas"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "5. Auditoría on-chain (colección privada)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_emisor}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}/consultas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}",
+								"consultas"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "597"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"255-t2AJmng47RAi0WA2fXh5pG2WiOs\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 10:12:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"actorMspId\": \"Org2MSP\",\n        \"consultedAt\": 1758965409,\n        \"hashedId\": \"7c1b4902ab93016c8f068e166ae60999a823f6ac71207f8ebb1de181b784ff25\",\n        \"tokenId\": \"CUFE-004\"\n    },\n    {\n        \"actorMspId\": \"Org1MSP\",\n        \"consultedAt\": 1758965954,\n        \"hashedId\": \"5aa7c20afb986b83434ce8153138910d9677a36c5fe6a895185b5b8f01d1f8b9\",\n        \"tokenId\": \"CUFE-004\"\n    },\n    {\n        \"actorMspId\": \"Org1MSP\",\n        \"consultedAt\": 1758966294,\n        \"hashedId\": \"5aa7c20afb986b83434ce8153138910d9677a36c5fe6a895185b5b8f01d1f8b9\",\n        \"tokenId\": \"CUFE-004\"\n    },\n    {\n        \"actorMspId\": \"Org2MSP\",\n        \"consultedAt\": 1758966313,\n        \"hashedId\": \"4ab0294710009303f075fed1130b05a9c70c1821354c6c8b755a072f708f2607\",\n        \"tokenId\": \"CUFE-004\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "6. Auditoría off-chain (listener)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_emisor}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/auditoria/consultas-offchain",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auditoria",
+						"consultas-offchain"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "6. Auditoría off-chain (listener)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_emisor}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auditoria/consultas-offchain",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auditoria",
+								"consultas-offchain"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "863"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35f-Ng8sUTOqI3wmQ5mB/bNJff0OPCg\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 16:25:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"tokenId\": \"CUFE-004\",\n        \"hashedId\": \"4ab0294710009303f075fed1130b05a9c70c1821354c6c8b755a072f708f2607\",\n        \"actorMspId\": \"Org2MSP\",\n        \"consultedAt\": 1758966313,\n        \"blockNumber\": 46,\n        \"transactionId\": \"0b9919449edc0e53f14b93ace477f0ca1321052c40e5a0779b6789d2b7017050\",\n        \"receivedAt\": 1758987693529,\n        \"raw\": {\n            \"tokenId\": \"CUFE-004\",\n            \"hashedId\": \"4ab0294710009303f075fed1130b05a9c70c1821354c6c8b755a072f708f2607\",\n            \"actorMspId\": \"Org2MSP\",\n            \"consultedAt\": 1758966313\n        }\n    },\n    {\n        \"tokenId\": \"CUFE-004\",\n        \"hashedId\": \"4ab0294710009303f075fed1130b05a9c70c1821354c6c8b755a072f708f2607\",\n        \"actorMspId\": \"Org2MSP\",\n        \"consultedAt\": 1758990202,\n        \"blockNumber\": 47,\n        \"transactionId\": \"72d17f076804cac02f714784e2233a8f8dd9a2b5de9cbe9d5575e16cbccf52cb\",\n        \"receivedAt\": 1758990204592,\n        \"raw\": {\n            \"tokenId\": \"CUFE-004\",\n            \"hashedId\": \"4ab0294710009303f075fed1130b05a9c70c1821354c6c8b755a072f708f2607\",\n            \"actorMspId\": \"Org2MSP\",\n            \"consultedAt\": 1758990202\n        }\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Rechazar factura (Org2)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_receptor}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"motivo\":\"Error en valores\"}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}/rechazar",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}",
+						"rechazar"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Rechazar factura (Org2)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_receptor}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"motivo\":\"Error en valores\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}/rechazar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}",
+								"rechazar"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "248"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f8-9OemfRfgBz9mPwP1wXvLZiU7wLE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 09:12:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"No valid responses from any peers. Errors:\\n    peer=peer0.org2.example.com:9051, status=500, message=Solo EMITIDA puede pasar a RECHAZADA\\n    peer=peer0.org1.example.com:7051, status=500, message=Solo EMITIDA puede pasar a RECHAZADA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Pagar factura (Org1)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_emisor}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"refPago\":\"TRANS-987\"}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}/pagar",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}",
+						"pagar"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Pagar factura (Org1)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_emisor}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"refPago\":\"TRANS-987\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}/pagar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}",
+								"pagar"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "40"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"28-WYfV/KTXEkfyLztUuSJ3I0ynk+o\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 09:37:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"tokenId\": \"CUFE-004\",\n    \"estado\": \"PAGADA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Anular factura (Org1)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{token_emisor}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"motivo\":\"Nota crédito\"}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/facturas/{{token_id}}/anular",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"facturas",
+						"{{token_id}}",
+						"anular"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Anular factura (Org1)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token_emisor}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"motivo\":\"Nota crédito\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/facturas/{{token_id}}/anular",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"facturas",
+								"{{token_id}}",
+								"anular"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29-cc+gvUBcmZiIyueWn9Tsdi5WESU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 09:19:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"tokenId\": \"CUFE-003\",\n    \"estado\": \"ANULADA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear usuario /acepta org1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-api-key",
+						"value": "org1token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"apiKey\": \"{{api_key}}\",\r\n  \"mspId\": \"Org1MSP\",\r\n  \"label\": \"nicolaspruebas\",\r\n   \"certificate\": \"-----BEGIN CERTIFICATE-----\\nMIICazCCAhGgAwIBAgIUV8vAWhvpdCjBh3Sg/WQcHAf7mCgwCgYIKoZIzj0EAwIw\\nczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\\nbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\\nE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMjUwOTI3MDkzMzQwWhcNMzUwOTI1MDkz\\nMzQwWjCBiTELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNV\\nBAcMDVNhbiBGcmFuY2lzY28xGTAXBgNVBAoMEG9yZzEuZXhhbXBsZS5jb20xDzAN\\nBgNVBAsMBmNsaWVudDEhMB8GA1UEAwwYbmljb2xhc0BvcmcxLmV4YW1wbGUuY29t\\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEA0xdebiZgdVHRJi3vSfBsImx59Ql\\nXNe8A6aH5Hlp95LFVXHromcjb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLaNsMGow\\nDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFFcogGhIG8bz\\natAC9QhT1bGEdfDjMCsGA1UdIwQkMCKAIJoTA2Y0ceRACfykiOlSCLR2J/b2P0On\\nCOk4kaxsZaZhMAoGCCqGSM49BAMCA0gAMEUCIDTG6IX+dNPriWqHGWglW7MIkD4S\\nG2txQLFddb5D4d2JAiEAonVfbAhBbbq7Pd0btPuJ9xmDeb0ChdnIlcy4Qk5EKos=\\n-----END CERTIFICATE-----\\n\",\r\n  \"privateKey\": \"-----BEGIN EC PRIVATE KEY-----\\nMHcCAQEEIH7dybAfpkX2SMBENFAirf/mmyp5b4trIAjMOnTig7zuoAoGCCqGSM49\\nAwEHoUQDQgAEA0xdebiZgdVHRJi3vSfBsImx59QlXNe8A6aH5Hlp95LFVXHromcj\\nb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLQ==\\n-----END EC PRIVATE KEY-----\\n\",\r\n  \"connectionProfile\": \"config/organizations/connection-org1.json\",\r\n  \"walletPath\": \"../wallet-app\",\r\n  \"overwrite\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear usuario /acepta org1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "org1token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiKey\": \"{{api_key}}\",\r\n  \"mspId\": \"Org1MSP\",\r\n  \"label\": \"nicolaspruebas\",\r\n   \"certificate\": \"-----BEGIN CERTIFICATE-----\\nMIICazCCAhGgAwIBAgIUV8vAWhvpdCjBh3Sg/WQcHAf7mCgwCgYIKoZIzj0EAwIw\\nczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\\nbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\\nE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMjUwOTI3MDkzMzQwWhcNMzUwOTI1MDkz\\nMzQwWjCBiTELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNV\\nBAcMDVNhbiBGcmFuY2lzY28xGTAXBgNVBAoMEG9yZzEuZXhhbXBsZS5jb20xDzAN\\nBgNVBAsMBmNsaWVudDEhMB8GA1UEAwwYbmljb2xhc0BvcmcxLmV4YW1wbGUuY29t\\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEA0xdebiZgdVHRJi3vSfBsImx59Ql\\nXNe8A6aH5Hlp95LFVXHromcjb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLaNsMGow\\nDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFFcogGhIG8bz\\natAC9QhT1bGEdfDjMCsGA1UdIwQkMCKAIJoTA2Y0ceRACfykiOlSCLR2J/b2P0On\\nCOk4kaxsZaZhMAoGCCqGSM49BAMCA0gAMEUCIDTG6IX+dNPriWqHGWglW7MIkD4S\\nG2txQLFddb5D4d2JAiEAonVfbAhBbbq7Pd0btPuJ9xmDeb0ChdnIlcy4Qk5EKos=\\n-----END CERTIFICATE-----\\n\",\r\n  \"privateKey\": \"-----BEGIN EC PRIVATE KEY-----\\nMHcCAQEEIH7dybAfpkX2SMBENFAirf/mmyp5b4trIAjMOnTig7zuoAoGCCqGSM49\\nAwEHoUQDQgAEA0xdebiZgdVHRJi3vSfBsImx59QlXNe8A6aH5Hlp95LFVXHromcj\\nb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLQ==\\n-----END EC PRIVATE KEY-----\\n\",\r\n  \"connectionProfile\": \"config/organizations/connection-org1.json\",\r\n  \"walletPath\": \"../wallet-app\",\r\n  \"overwrite\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "175"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"af-iM4SI7OrQhkr0SnB7fxDBUSkqf4\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 09:37:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"apiKey\": \"praxis1\",\n    \"mspId\": \"Org1MSP\",\n    \"label\": \"nicolaspruebas\",\n    \"connectionProfile\": \"config/organizations/connection-org1.json\",\n    \"walletPath\": \"../wallet-app\",\n    \"status\": \"updated\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear usuario /acepta org2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-api-key",
+						"value": "org1token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"apiKey\": \"{{api_key2}}\",\r\n  \"mspId\": \"Org2MSP\",\r\n  \"label\": \"nicolaspruebas2\",\r\n   \"certificate\": \"-----BEGIN CERTIFICATE-----\\nMIICazCCAhGgAwIBAgIUV8vAWhvpdCjBh3Sg/WQcHAf7mCgwCgYIKoZIzj0EAwIw\\nczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\\nbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\\nE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMjUwOTI3MDkzMzQwWhcNMzUwOTI1MDkz\\nMzQwWjCBiTELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNV\\nBAcMDVNhbiBGcmFuY2lzY28xGTAXBgNVBAoMEG9yZzEuZXhhbXBsZS5jb20xDzAN\\nBgNVBAsMBmNsaWVudDEhMB8GA1UEAwwYbmljb2xhc0BvcmcxLmV4YW1wbGUuY29t\\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEA0xdebiZgdVHRJi3vSfBsImx59Ql\\nXNe8A6aH5Hlp95LFVXHromcjb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLaNsMGow\\nDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFFcogGhIG8bz\\natAC9QhT1bGEdfDjMCsGA1UdIwQkMCKAIJoTA2Y0ceRACfykiOlSCLR2J/b2P0On\\nCOk4kaxsZaZhMAoGCCqGSM49BAMCA0gAMEUCIDTG6IX+dNPriWqHGWglW7MIkD4S\\nG2txQLFddb5D4d2JAiEAonVfbAhBbbq7Pd0btPuJ9xmDeb0ChdnIlcy4Qk5EKos=\\n-----END CERTIFICATE-----\\n\",\r\n  \"privateKey\": \"-----BEGIN EC PRIVATE KEY-----\\nMHcCAQEEIH7dybAfpkX2SMBENFAirf/mmyp5b4trIAjMOnTig7zuoAoGCCqGSM49\\nAwEHoUQDQgAEA0xdebiZgdVHRJi3vSfBsImx59QlXNe8A6aH5Hlp95LFVXHromcj\\nb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLQ==\\n-----END EC PRIVATE KEY-----\\n\",\r\n  \"connectionProfile\": \"config/organizations/connection-org2.json\",\r\n  \"walletPath\": \"../wallet-org2\",\r\n  \"overwrite\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear usuario /acepta org2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "org1token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiKey\": \"{{api_key2}}\",\r\n  \"mspId\": \"Org2MSP\",\r\n  \"label\": \"nicolaspruebas2\",\r\n   \"certificate\": \"-----BEGIN CERTIFICATE-----\\nMIICazCCAhGgAwIBAgIUV8vAWhvpdCjBh3Sg/WQcHAf7mCgwCgYIKoZIzj0EAwIw\\nczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\\nbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\\nE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMjUwOTI3MDkzMzQwWhcNMzUwOTI1MDkz\\nMzQwWjCBiTELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNV\\nBAcMDVNhbiBGcmFuY2lzY28xGTAXBgNVBAoMEG9yZzEuZXhhbXBsZS5jb20xDzAN\\nBgNVBAsMBmNsaWVudDEhMB8GA1UEAwwYbmljb2xhc0BvcmcxLmV4YW1wbGUuY29t\\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEA0xdebiZgdVHRJi3vSfBsImx59Ql\\nXNe8A6aH5Hlp95LFVXHromcjb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLaNsMGow\\nDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFFcogGhIG8bz\\natAC9QhT1bGEdfDjMCsGA1UdIwQkMCKAIJoTA2Y0ceRACfykiOlSCLR2J/b2P0On\\nCOk4kaxsZaZhMAoGCCqGSM49BAMCA0gAMEUCIDTG6IX+dNPriWqHGWglW7MIkD4S\\nG2txQLFddb5D4d2JAiEAonVfbAhBbbq7Pd0btPuJ9xmDeb0ChdnIlcy4Qk5EKos=\\n-----END CERTIFICATE-----\\n\",\r\n  \"privateKey\": \"-----BEGIN EC PRIVATE KEY-----\\nMHcCAQEEIH7dybAfpkX2SMBENFAirf/mmyp5b4trIAjMOnTig7zuoAoGCCqGSM49\\nAwEHoUQDQgAEA0xdebiZgdVHRJi3vSfBsImx59QlXNe8A6aH5Hlp95LFVXHromcj\\nb3FFbMS5oPt/dTaBgyiGQgc6zd08NJGdLQ==\\n-----END EC PRIVATE KEY-----\\n\",\r\n  \"connectionProfile\": \"config/organizations/connection-org2.json\",\r\n  \"walletPath\": \"../wallet-org2\",\r\n  \"overwrite\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "177"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b1-hSZ3eoIwQV9bfKusygrdVzQk0xw\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Sep 2025 09:37:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"apiKey\": \"praxis3\",\n    \"mspId\": \"Org2MSP\",\n    \"label\": \"nicolaspruebas2\",\n    \"connectionProfile\": \"config/organizations/connection-org2.json\",\n    \"walletPath\": \"../wallet-org2\",\n    \"status\": \"updated\"\n}"
+				}
+			]
+		}
+	]
+}
