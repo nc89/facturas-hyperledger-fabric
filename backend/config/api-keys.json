@@ -1,0 +1,46 @@
+{
+  "bindings": [
+    {
+      "apiKey": "org1token",
+      "mspId": "Org1MSP",
+      "label": "nicolas2",
+      "connectionProfile": "config/organizations/connection-org1.json",
+      "walletPath": "wallet-app"
+    },
+    {
+      "apiKey": "org2token",
+      "mspId": "Org2MSP",
+      "label": "nicolas2",
+      "connectionProfile": "config/organizations/connection-org2.json",
+      "walletPath": "wallet-org2"
+    },
+    {
+      "apiKey": "praxis",
+      "mspId": "Org1MSP",
+      "label": "nicolas",
+      "connectionProfile": "config/organizations/connection-org1.json",
+      "walletPath": "../wallet-app"
+    },
+    {
+      "apiKey": "praxis2",
+      "mspId": "Org2MSP",
+      "label": "nicolas2",
+      "connectionProfile": "config/organizations/connection-org2.json",
+      "walletPath": "../wallet-org2"
+    },
+    {
+      "apiKey": "praxis1",
+      "mspId": "Org1MSP",
+      "label": "nicolaspruebas",
+      "connectionProfile": "config/organizations/connection-org1.json",
+      "walletPath": "../wallet-app"
+    },
+    {
+      "apiKey": "praxis3",
+      "mspId": "Org2MSP",
+      "label": "nicolaspruebas2",
+      "connectionProfile": "config/organizations/connection-org2.json",
+      "walletPath": "../wallet-org2"
+    }
+  ]
+}

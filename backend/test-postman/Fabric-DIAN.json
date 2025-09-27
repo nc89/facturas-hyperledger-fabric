@@ -1,0 +1,29 @@
+{
+  "id": "fab3a327-5df2-4a41-9c7e-dian-env",
+  "name": "Fabric-DIAN",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "enabled": true
+    },
+    {
+      "key": "token_emisor",
+      "value": "org1token",
+      "enabled": true
+    },
+    {
+      "key": "token_receptor",
+      "value": "org2token",
+      "enabled": true
+    },
+    {
+      "key": "token_id",
+      "value": "CUFE-001",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-09-27T00:00:00.000Z",
+  "_postman_exported_using": "Postman/11.x"
+}
